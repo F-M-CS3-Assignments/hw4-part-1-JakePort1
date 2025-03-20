@@ -3,6 +3,5 @@ comp:
 
 run: 
 	./bdc
-
-all: 
-	comp run
+	
+all: comp run

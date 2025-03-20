@@ -1,0 +1,74 @@
+ToDo: 
+
+    Write a program that findest the largest conglomerate of numbers from some list of numbers such 
+    that if you pull any two numbers from the list, the smaller number divides the larger number.
+
+    ex: 
+        [28, 22, 7, 2, 8, 14, 24, 56] has many possible solutions, but one is: {7, 14, 28, 56}.
+
+    The answer must be the LARGEST possible conglomerate size. The asnwer only needs to provide one solution 
+
+    Note #3: THe program should work if the input list is empty (it should return empty list) and also if the
+    input list contains only one number (it should return that same list with one number)
+
+    Note #4: If the input has multiple items, but among those items there are no pairs that satisfy the 
+    divisibility requirement, you can return the largest or the smallest item in the list as the answer.  For 
+    example if the input: [7, 11, 17, 3] then output: [17] or output: [3] are both 
+    acceptable
+    
+
+    Use recursion for this: 
+
+
+    Psuedo Code: 
+
+
+
+
+
+
+
+
+    def bdc(vector<int> input): 
+        sorted = sort(input)
+        return bdc_helper(sorted)
+
+
+    def bdc_helper(vector<int> input)
+       
+        // base case 
+        if len(input) == 1 || len(input) == 0: 
+            return input
+
+
+        vector<int> candidate: 
+
+        for i in input size:    
+            // we know that if a>b>c, if b|a and c|b, then c|a
+
+            Start = input.at(i) 
+
+
+            vector<int> temp;
+            for j in sub_vec(input, i, end): 
+                check to see if input.at(j) divides Start. 
+                if so, set temp to a sub vector of input starting at that index 
+                break out of the loop 
+
+            R = bdc_helper(temp)
+
+            cand = combine( L and R)
+    
+            candidates.push_back(cand)
+
+
+        OR IF NO ITEM WORKS RETURN THE SMALLEST OR LARGEST ELEMENT AS A VECTOR
+        return longest_vector(candidates) (theres a command for this )
+
+            
+
+
+
+
+       
+
