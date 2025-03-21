@@ -33,57 +33,54 @@ vector<int> biggest_divisible_conglomerate(vector<int> input){
 };
 
 
+
+
+
 //helper function to return the index of the next division 
 int index_finder(vector<int> vec, int start){
-    unsigned long long int num = vec.at(start); //num to do the dividing. 
-    int INDEX;  //will store the index of the divisior here
 
-    for(int i = start + 1; i < vec.size(); i++){ // I think this is right 
-        if(vec.at(i) % num == 0){
-            INDEX = i;
-            break;
+    for(int i = start + 1; i < vec.size(); i++){
+        if(vec[i] % vec[start] == 0){
+            return i;
         }
     }
-    if(INDEX == start){ //returns negative one to represent that there are no other divisors. 
-        return -1; 
-    }
-    return INDEX;
+    return -1;
 }
+
 
 
 vector<int> bdc_helper(vector<int> input){
 
-    //base cases
-    if(input.size() <= 1){  //if less than or equal to one, there are no more possible conglomerates t0 make. 
-        return input; //just return input. 
+    //base case
+    if(input.size() <= 1){
+        return input;
     }
 
-    vector<vector<int>> candidates; //will store all the possible conglomerates here. 
+    vector<vector<int>> candidates; 
 
-    for(int i = 0; i < input.size(); i++){ //tries all the different starting points. 
-        vector<int> L = {input.at(i)}; //left side (one element)
+    for(int i = 0; i < input.size(); i++){
 
-        int j = index_finder(input,i); //index of the next divisor
-        vector<int> R = {};            //creats an empty vector as R just incase j turns out to be invalid 
-        if(j != -1){  //-1 represnets that there are no other divisors
-            vector<int> Rin(input.begin() + j, input.end()); // creates a sub vector representing the right side from where the index can divide
-            vector<int> R = bdc_helper(Rin);
-            cout << vec_to_string(R);
+        vector<int> L = {input[i]}; //creates left side
+        int j = index_finder(input,i); //finds the next divisor starting at i
+
+        if(j != -1){
+
+            //creates a subvector and gets the Right side conglomerate by using recursion 
+            vector<int> R_side(input.begin() + j, input.end()); 
+            vector<int> R = bdc_helper(R_side); 
+
+            //cbombines the left and right side vectors 
+            vector<int> combined = L;  
+            combined.insert(combined.end(), R.begin(), R.end());
+
+            //adds the combined vector to the list of candidates. 
+            candidates.push_back(combined); 
+
         }
 
+    }
 
 
-
-
-                //combine L and R 
-                vector<int> combined;
-                combined.insert(combined.end(), L.begin(), L.end());
-                combined.insert(combined.end(), R.begin(), R.end());
-                
-                //add the combined vector to the list of possivl candidates: 
-                candidates.push_back(combined); 
-            }
-    
     int d = 0;  //dumy variable to hold the size of the current largest vector 
     int idx = 0; //index of the above vector ^^
     for(int i = 0; i < candidates.size(); i++){ //iterates through candidates 
@@ -115,6 +112,20 @@ int main(){
 
     vector<int> test = {28, 22, 7, 2, 8, 14, 24, 56};
     vector<int> BDC = biggest_divisible_conglomerate(test);
+
+
+
+
+  //  vector<int> test2 = {2,4,6,8,24}; 
+   // int j = index_finder(test2,0);
+   // vector<int> subset(test2.begin() + j, test2.end()); 
+
+   // cout << "index is: " << j << ". Sub vector is: " << vec_to_string(subset); 
+
+
+
+
+
 
 
     cout << endl << endl;
