@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/jacobport/Desktop/CPS 222/Homeworks /hw4-part-1-JakePort1/biggest-divisible-conglomerate'
+relocations:     []
+...
