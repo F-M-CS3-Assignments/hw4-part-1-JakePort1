@@ -35,8 +35,8 @@ vector<int> biggest_divisible_conglomerate(vector<int> input){
 
 //helper function to return the index of the next division 
 int index_finder(vector<int> vec, int start){
-    int num = vec.at(0); //num to do the dividing. 
-    int INDEX; //will store the index of the divisior here
+    unsigned long long int num = vec.at(start); //num to do the dividing. 
+    int INDEX;  //will store the index of the divisior here
 
     for(int i = start + 1; i < vec.size(); i++){ // I think this is right 
         if(vec.at(i) % num == 0){
@@ -44,7 +44,7 @@ int index_finder(vector<int> vec, int start){
             break;
         }
     }
-    if(INDEX == 0){ //returns negative one to represent that there are no other divisors. 
+    if(INDEX == start){ //returns negative one to represent that there are no other divisors. 
         return -1; 
     }
     return INDEX;
@@ -62,12 +62,18 @@ vector<int> bdc_helper(vector<int> input){
 
     for(int i = 0; i < input.size(); i++){ //tries all the different starting points. 
         vector<int> L = {input.at(i)}; //left side (one element)
-        int j = index_finder(input,i);
 
-        vector<int> Rin(input.begin() + j, input.end()); // creates a sub vector representing the right side from where the index can divide
-        vector<int> R = bdc_helper(Rin);
+        int j = index_finder(input,i); //index of the next divisor
+        vector<int> R = {};            //creats an empty vector as R just incase j turns out to be invalid 
+        if(j != -1){  //-1 represnets that there are no other divisors
+            vector<int> Rin(input.begin() + j, input.end()); // creates a sub vector representing the right side from where the index can divide
+            vector<int> R = bdc_helper(Rin);
+            cout << vec_to_string(R);
+        }
 
-                cout << vec_to_string(L) << "<--->"<<  vec_to_string(R) << endl; // DEBUGGIN PURPOSES:::::Not working properly....
+
+
+
 
                 //combine L and R 
                 vector<int> combined;
@@ -75,22 +81,12 @@ vector<int> bdc_helper(vector<int> input){
                 combined.insert(combined.end(), R.begin(), R.end());
                 
                 //add the combined vector to the list of possivl candidates: 
-
                 candidates.push_back(combined); 
             }
-        
-
-
-
-
-
-
-        
-    }
-
+    
     int d = 0;  //dumy variable to hold the size of the current largest vector 
     int idx = 0; //index of the above vector ^^
-    for (int i = 0; i < candidates.size(); i++){ //iterates through candidates 
+    for(int i = 0; i < candidates.size(); i++){ //iterates through candidates 
         if(candidates.at(i).size() > d){ //if a candidates sixze is greater than the current largest candidate size, make that the new index and largest size 
             idx = i;
             d = candidates.at(i).size();
@@ -107,7 +103,6 @@ vector<int> bdc_helper(vector<int> input){
     }else{ //else, return the vector thats the longest. 
         return candidates.at(idx);
     }
-    
 };
 
 
