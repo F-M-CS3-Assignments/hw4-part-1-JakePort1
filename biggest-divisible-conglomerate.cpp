@@ -25,8 +25,7 @@ string vec_to_string(vector<int> v){
 
 vector<int> biggest_divisible_conglomerate(vector<int> input){
     vector<int> SortedInput = input; 
-    // sort(SortedInput.begin(), SortedInput.end(), greater<int>()); //sorts in descending order,
-        sort(SortedInput.begin(), SortedInput.end()); //sorts in descending order,
+        sort(SortedInput.begin(), SortedInput.end()); 
 
     // cout << vec_to_string(SortedInput) << endl; // for debugging
 
@@ -34,6 +33,22 @@ vector<int> biggest_divisible_conglomerate(vector<int> input){
 };
 
 
+//helper function to return the index of the next division 
+int index_finder(vector<int> vec, int start){
+    int num = vec.at(0); //num to do the dividing. 
+    int INDEX; //will store the index of the divisior here
+
+    for(int i = start + 1; i < vec.size(); i++){ // I think this is right 
+        if(vec.at(i) % num == 0){
+            INDEX = i;
+            break;
+        }
+    }
+    if(INDEX == 0){ //returns negative one to represent that there are no other divisors. 
+        return -1; 
+    }
+    return INDEX;
+}
 
 
 vector<int> bdc_helper(vector<int> input){
@@ -46,14 +61,13 @@ vector<int> bdc_helper(vector<int> input){
     vector<vector<int>> candidates; //will store all the possible conglomerates here. 
 
     for(int i = 0; i < input.size(); i++){ //tries all the different starting points. 
-
         vector<int> L = {input.at(i)}; //left side (one element)
-        for(int j = i + 1; j < input.size(); j++){ //iterates thorugh the rest of the vector 
-            if(input.at(j) % input.at(i) == 0){ //test to see if i divides j (indexes)
+        int j = index_finder(input,i);
 
-                //Make a subset from j to the end, and use the subset as the rescursive input 
-                vector<int> Rin(input.begin() + j , input.end());
-                vector<int> R = bdc_helper(Rin);
+        vector<int> Rin(input.begin() + j, input.end()); // creates a sub vector representing the right side from where the index can divide
+        vector<int> R = bdc_helper(Rin);
+
+                cout << vec_to_string(L) << "<--->"<<  vec_to_string(R) << endl; // DEBUGGIN PURPOSES:::::Not working properly....
 
                 //combine L and R 
                 vector<int> combined;
@@ -61,9 +75,17 @@ vector<int> bdc_helper(vector<int> input){
                 combined.insert(combined.end(), R.begin(), R.end());
                 
                 //add the combined vector to the list of possivl candidates: 
+
                 candidates.push_back(combined); 
             }
-        }
+        
+
+
+
+
+
+
+        
     }
 
     int d = 0;  //dumy variable to hold the size of the current largest vector 
@@ -76,8 +98,11 @@ vector<int> bdc_helper(vector<int> input){
     }
    
     //if there are no conglomerates larger than one (so no conglomerates), return a vector of the smallest element 
-    if(candidates.at(idx).size() <= 1){
+    if(candidates.at(idx).size() == 1){
         vector<int> result = {input.at(0)};
+        return result;
+    }else if(candidates.at(idx).size() == 0){
+        vector<int> result = {};
         return result;
     }else{ //else, return the vector thats the longest. 
         return candidates.at(idx);
