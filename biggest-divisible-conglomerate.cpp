@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <cassert>
+#include <vector>
 
 using namespace std;
 
@@ -50,7 +51,7 @@ int index_finder(vector<int> vec, int start){
 
 
 vector<int> bdc_helper(vector<int> input){
-    cout << "input: " << vec_to_string(input) << endl << endl << endl;
+    // cout << "input: " << vec_to_string(input) << endl << endl << endl;
 
     //base cases 
     if(input.size() == 1 || input.size() == 0){
@@ -62,7 +63,8 @@ vector<int> bdc_helper(vector<int> input){
 
 
     for(int i = 0; i < input.size(); i++){
-        vector<int> L = {input[i]}; cout << " (left esablished as " << input[i] << " on i = " << i << endl;
+        vector<int> L = {input[i]}; 
+        // cout << " (left esablished as " << input[i] << " on i = " << i << endl;
         vector<int> R;
 
         int j = index_finder(input, i); //index of next div, -1 of NA (i + 1 is built into the function)
@@ -72,7 +74,7 @@ vector<int> bdc_helper(vector<int> input){
             
         }
         if(j!= -1){
-            cout << "recursive call (i = " << i << "): " << endl;
+            // cout << "recursive call (i = " << i << "): " << endl;
             vector<int> Rin(input.begin() + j, input.end()); 
             R = bdc_helper(Rin); 
         }
@@ -81,7 +83,7 @@ vector<int> bdc_helper(vector<int> input){
         combined.insert(combined.end(), R.begin(), R.end()); 
         candidates.push_back(combined); 
 
-        cout<< i << ":    " << vec_to_string(L) << "<-------->" << vec_to_string(R) << endl;
+        // cout<< i << ":    " << vec_to_string(L) << "<-------->" << vec_to_string(R) << endl;
 
     }
 
@@ -103,6 +105,10 @@ vector<int> bdc_helper(vector<int> input){
 
     // }
 
+
+    for(int i = 0; i < candidates.size(); i++){
+        cout << "candidate: " << vec_to_string(candidates[i]) << endl;
+    }
 
     //returns smallest or emtpy lijst if the vector is 1 or 0
     if(currVecSize == 0){
@@ -135,9 +141,9 @@ void test(){
 int main(){
 
 
-    // vector<int> test = {28, 22, 7, 2, 8, 14, 24, 56};
+    vector<int> test = {28, 22, 7, 2, 8, 14, 24, 56};
 
-    vector<int> test = {9, 10, 5, 3, 15, 20};
+    // vector<int> test = {9, 10, 5, 3, 15, 20};
     vector<int> BDC = biggest_divisible_conglomerate(test); 
 
 
